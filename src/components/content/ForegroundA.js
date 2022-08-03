@@ -54,51 +54,14 @@ function ForegroundA() {
 
         }
     }
+    
     return (
-        <div>
-            <button aria-describedby={id} type="button" onClick={handleClick}>
-                Toggle Popper
-            </button>
-
-            <Draggable
-                // defaultPosition={
-                //     positions
-                //         ? { x: 0, y: 0 }
-                //         : { x: positions.x, y: positions.y }
-                // }
-                key={1}
-                nodeRef={nodeRef}
-                onStop={handleStop}
-                bounds={{ top: -100, left: -100, right: 100, bottom: 100 }}
-                //disabled={hasLoaded}
-                positions={positions
-                    ? { x: 0, y: 0 }
-                    : { x: positions.x, y: positions.y }}
-                onDrag={onDrag}
-            >
-                <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    ref={nodeRef}
-                >
-
-                    <div  style={{ backgroundColor: 'lightblue', margin: '20px 25%', textAlign: 'center', fontSize: '40px' }}
-
-                    >
-                        Item1
-                    </div>
-
-
-                </Popover>
-            </Draggable>
-
-        </div>
+        <audio controls name="media" style={{width:"100%"}}>
+        <source
+          src="https://pega-audio.mediacdn.vn/Grad_tts/out/20220801212958.m4a"
+          type="audio/mpeg"
+        />
+      </audio>
     )
 }
 

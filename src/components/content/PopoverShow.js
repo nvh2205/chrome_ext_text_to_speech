@@ -17,6 +17,10 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Audi from "./Audi";
 import Draggable from "react-draggable";
+import audioApi from "../../services/audioApi";
+import axios from "axios";
+import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
+import PauseCircleOutlineOutlinedIcon from "@mui/icons-material/PauseCircleOutlineOutlined";
 
 function PopoverShow(props, ref) {
   //width and Height of Popover
@@ -47,8 +51,13 @@ function PopoverShow(props, ref) {
           bottom: `${bottom}px`,
         };
 
-  const [optionSpeed, setOptionSpeed] = useState([1, 2, 3]);
+  const [optionSpeed, setOptionSpeed] = useState([
+    0.25, 0.5, 0.75, 1, 1.25, 1.5, 2.0,
+  ]);
   const [speed, setSpeed] = useState(1);
+
+  //index of the text to choose to play the audio
+  const [indexText, setIndexText] = useState(0);
 
   const clickOptionSpeed = (popupState, optionSpeed) => {
     popupState.close();
@@ -63,6 +72,7 @@ function PopoverShow(props, ref) {
         onClick={() => {
           clickOptionSpeed(popupState, item);
         }}
+        sx={{ borderBottom: "1px dotted #9b698d", color: "#48742c" }}
       >
         {" "}
         <SpeedOutlinedIcon sx={{ marginRight: "5px" }} /> x{item}
@@ -79,6 +89,15 @@ function PopoverShow(props, ref) {
 
   //Drag-Drop component
   const nodeRef = useRef(null);
+
+  //Ref icon next to text to play pause audio
+  const refIconPlay = useRef(null);
+
+  //Play icon to play pause Audio
+  const [playAudio, setPlayAudio] = useState(false);
+
+  //ref to scroll to an element while playing music
+  const refElementScrollText = useRef(null);
 
   const elementRef = useRef();
   const [heightPop, setHeightPop] = useState(0);
@@ -108,6 +127,95 @@ function PopoverShow(props, ref) {
     };
   }, [showPopover]);
 
+  //Play icon to play audio
+  const clickIconToPlayAudio = (e) => {
+    const currentIndex = Number(e.currentTarget.id.split("_")[2]);
+    const checkPlay = playAudio;
+
+    setIndexText(currentIndex);
+    setPlayAudio(!checkPlay);
+
+    !checkPlay
+      ? refIconPlay.current.audio.current.play()
+      : refIconPlay.current.audio.current.pause();
+  };
+
+  //scroll to an element while playing music
+  const onClickExecuteScrollText = () => {
+    refElementScrollText.current.scrollIntoView();
+  };
+
+  //Call api
+  useEffect(() => {
+    // const fetchAudio=async() => {
+    //   try {
+    //     const data=new FormData();
+    //     data.append("text",selectText);
+    //     const res= await audioApi.postTextConvertAudio(data);
+
+    //     console.log(res);
+
+    //   } catch (error) {
+    //     console.log(error.message);
+    //   }
+    // }
+    // fetchAudio();
+
+    const fetchAudio = async () => {
+      const data = new FormData();
+      data.append("text", selectText);
+
+      try {
+        const res = await axios.post(
+          "https://demo.corenlp.admicro.vn/tts_multispeakers_demo_2/vangt",
+          data
+        );
+        console.log(res);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchAudio();
+  }, [selectText]);
+
+  const disPlayText = () => {
+    const result = selectText.map((item, index) => {
+      return (
+        <div
+          key={index}
+          ref={index == indexText ? refElementScrollText : null}
+          className={`${
+            indexText == index ? styles.display_text_play : styles.display_text
+          }`}
+        >
+          {playAudio && indexText == index ? (
+            <PauseCircleOutlineOutlinedIcon
+              className={styles.display_text_icon}
+              onClick={clickIconToPlayAudio}
+              id={`Text_to_${index}`}
+            />
+          ) : (
+            <PlayCircleFilledWhiteOutlinedIcon
+              className={styles.display_text_icon}
+              onClick={clickIconToPlayAudio}
+              id={`Text_to_${index}`}
+            />
+          )}
+          <p
+            style={
+              indexText == index
+                ? { marginLeft: "15px", textDecoration: "underline" }
+                : { marginLeft: "15px" }
+            }
+          >
+            {item}
+          </p>
+        </div>
+      );
+    });
+    return result;
+  };
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -128,6 +236,7 @@ function PopoverShow(props, ref) {
             }
       }
       positions={null}
+      handle="#strong"
     >
       <Popover
         id={id}
@@ -156,7 +265,7 @@ function PopoverShow(props, ref) {
             ></div>
 
             {/* Header popover */}
-            <section className={`${styles.Text__header}`}>
+            <section className={`${styles.Text__header}`} id="strong">
               <div
                 data-hook="content-page.save-card"
                 title="Save as a card"
@@ -171,8 +280,11 @@ function PopoverShow(props, ref) {
                   {(popupState) => (
                     <React.Fragment>
                       <Button variant="outlined" {...bindTrigger(popupState)}>
-                        <SpeedOutlinedIcon sx={{ marginRight: "5px" }} /> x
-                        {speed}
+                        Playback Speed
+                        <SpeedOutlinedIcon
+                          sx={{ marginRight: "5px", marginLeft: "5px" }}
+                        />{" "}
+                        x{speed}
                       </Button>
                       <Menu {...bindMenu(popupState)}>
                         {tagOptionSpeed(popupState, optionSpeed, speed)}
@@ -202,7 +314,7 @@ function PopoverShow(props, ref) {
                 className={`${styles.Text__original}`}
               >
                 {/* react-text: 240 */}
-                {selectText}
+                {disPlayText()}
                 {/* /react-text */}
               </section>
               <section className={`${styles.Text__translations}`}>
@@ -216,14 +328,14 @@ function PopoverShow(props, ref) {
 
                   {/* Audio */}
                   <section className={`${styles.Text__term_line}`}>
-                    {/* <div data-hook="translation-view.term.toggle" className={`${styles.Text__checkbox} ${styles.Button__btn__1lr0f}`} tabIndex={0}>
-            <i className="icon_ok" />
-        </div>
-        <div className={`${styles.Text__term}`}>Phần tử mẫu là một trong ba công nghệ chính của Thành phần Web. Chúng được sử dụng để giữ nội dung HTML không được hiển thị ngay lập tức và có thể được khởi tạo sau đó trong thời gian chạy. Vì chúng ta sẽ cần đánh dấu văn bản nhiều lần và nó sẽ không được nhìn thấy ngay từ đầu, nên sử dụng công nghệ này là rất hợp lý.
-            Tạo kiểu
-            Để làm cho highlighter của chúng ta trông đẹp và xuất hiện ở đúng vị trí, chúng ta cần xác định một số kiểu động:
-        </div> */}
-                    <Audi />
+                    <Audi
+                      speed={speed}
+                      ref={refIconPlay}
+                      setPlayAudio={setPlayAudio}
+                      setIndexText={setIndexText}
+                      indexText={indexText}
+                      onClickExecuteScrollText={onClickExecuteScrollText}
+                    />
                   </section>
                 </section>
               </section>

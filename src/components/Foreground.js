@@ -21,9 +21,6 @@ function Foreground() {
   const [widthPop, setWidthPop] = useState(450);
   const [heightPop, setHeightPop] = useState(370);
 
-  //Check popover position (bottom or top)
-  const [checkTop, setCheckTop] = useState(false);
-
   const onMouseUp = () => {
     const selection = window.getSelection();
     const text = selection.toString().trim();
@@ -38,12 +35,37 @@ function Foreground() {
       return;
     }
 
-    if (text) {
-      const actionText = setText(text);
-      dispatch(actionText);
+    //Number of cut characters
+    const splitText = 150;
 
-      const actionShowIcon = setShowIcon(true);
-      dispatch(actionShowIcon);
+    if (text) {
+      //Cut large strings into smaller ones for faster api delivery
+      const arrText = text.split(" ");
+      const arrResult = [];
+      let indexCurrentCut = 0;
+
+      while (indexCurrentCut <= arrText.length) {
+        const arrCut = arrText.slice(
+          indexCurrentCut,
+          indexCurrentCut + splitText
+        );
+        const stringConvert = arrCut.join(" ");
+        indexCurrentCut += splitText;
+
+        arrResult.push(stringConvert);
+      }
+
+      //Handle the icon click event first and then dispatch the showicon when double clicked on the container of the window select
+      const checkShowIcon = text == selectText.join(" ") ? false : true;
+      const timeoutShowIcon = setTimeout(() => {
+        const actionShowIcon = setShowIcon(checkShowIcon);
+        dispatch(actionShowIcon);
+        clearTimeout(timeoutShowIcon);
+      }, 0);
+
+      //Send text to reducer
+      const actionText = setText(arrResult);
+      dispatch(actionText);
 
       const xNew = x + width / 2;
       const heightSelect = height;
@@ -65,7 +87,7 @@ function Foreground() {
       });
       dispatch(actionXY);
     } else {
-      const actionText = setText("");
+      const actionText = setText([]);
       dispatch(actionText);
 
       const actionShowIcon = setShowIcon(false);
@@ -75,10 +97,37 @@ function Foreground() {
 
   useEffect(() => {
     showPopover == false && window.addEventListener("mouseup", onMouseUp);
+    //window.addEventListener("mousedown", onMouseDown);
+
     return () => {
       window.removeEventListener("mouseup", onMouseUp);
     };
   });
+
+  const onMouseDown = () => {
+    if (window.getSelection) {
+      if (window.getSelection().empty) {
+        // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        // Firefox
+        window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {
+      // IE?
+      document.selection.empty();
+    }
+
+    //window.removeEventListener("mouseup", onMouseUp);
+
+    // const selection = window.getSelection();
+    // const text = selection.toString().trim();
+
+    // if (selectText.join(" ") == text) {
+    //   const action = setShowIcon(false);
+    //   dispatch(action);
+    // }
+  };
 
   const aavv = () => {
     const result = [];
@@ -104,7 +153,9 @@ function Foreground() {
   };
 
   return (
-    <div>
+    <div
+    //onMouseDown={onMouseDown}
+    >
       <ForegroundA />
       {aavv()}
       {showIcon && <ShowIcon />}

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialText = {
-  selectText: "",
+  selectText: [],
   showIcon: false,
   showPopover: false,
   x: 0,
@@ -17,7 +17,7 @@ const text = createSlice({
   initialState: initialText,
   reducers: {
     setText: (state, action) => {
-      state.selectText = action.payload;
+      state.selectText = [...action.payload];
     },
 
     //Show icon when user bold highlight text
