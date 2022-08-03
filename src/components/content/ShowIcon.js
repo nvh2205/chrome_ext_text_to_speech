@@ -25,7 +25,6 @@ function ShowIcon(props) {
     const actionShowIcon = setShowIcon(false);
     dispatch(actionShowIcon);
   }
-  
 
   return (
     <div title="Text To  Speech" style={style} className={`${styles.Position_icon} ${styles.Button__btn__1lr0f}`}>
