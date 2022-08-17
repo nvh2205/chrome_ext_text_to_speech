@@ -90,6 +90,7 @@ module.exports = {
         { from: "src/background.js", to: "[name].[ext]" },
         { from: "src/inject_script.js", to: "[name].[ext]" },
         { from: "src/*.png", to: "[name].[ext]" },
+
       ],
     }),
     new webpack.ProvidePlugin({

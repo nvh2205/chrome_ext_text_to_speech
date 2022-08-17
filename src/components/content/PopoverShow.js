@@ -167,7 +167,10 @@ function PopoverShow(props, ref) {
   //Call api
   useEffect(() => {
     const fetchAudio = async () => {
-      console.log(process.env.REACT_APP_API_URL,'aa')
+      //console.log(process.env.REACT_APP_API_URL,'aa')
+      const actionSetLoadingAudio = setIsLoadingAudio(true);
+      dispatch(actionSetLoadingAudio);
+
       const listAudioFetch = await Promise.all(
         selectText.map(async (item, index) => {
           const arrText = item.split(" ");
@@ -176,8 +179,8 @@ function PopoverShow(props, ref) {
           const data = new FormData();
 
           data.append("text", item);
-          data.append("speaker_id",speaker_id);
-          data.append("speed_up",speed_up);
+          data.append("speaker_id", speaker_id);
+          data.append("speed_up", speed_up);
           try {
             const res = await axios.post(
               `https://d018-202-191-58-161.ap.ngrok.io/vangt`,
@@ -188,12 +191,13 @@ function PopoverShow(props, ref) {
               name: `${index}. ${textIndex}...`,
             };
           } catch (error) {
-            console.log(error.message);
             return "err";
           }
         })
       );
 
+      const actionSetLoadingAudioF = setIsLoadingAudio(false);
+      dispatch(actionSetLoadingAudioF);
       setListAudio(listAudioFetch);
     };
     fetchAudio();
@@ -216,7 +220,8 @@ function PopoverShow(props, ref) {
     // listAudioFetch();
 
     return () => {
-      setIsLoadingAudio(true);
+      const actionSetLoadingAudioT = setIsLoadingAudio(true);
+      dispatch(actionSetLoadingAudioT);
     };
   }, [selectText, speaker_id, speed_up]);
 
@@ -236,7 +241,7 @@ function PopoverShow(props, ref) {
             indexText == index ? styles.display_text_play : styles.display_text
           }`}
         >
-          {listAudio.length > 0 ? (
+          {listAudio.length > 0 && !isLoadingAudio? (
             errLoadingCallAudio ? (
               <WarningAmberOutlinedIcon
                 className={styles.display_text_icon}
@@ -410,7 +415,7 @@ function PopoverShow(props, ref) {
                         <WarningAmberOutlinedIcon /> Không thể tải được audio
                         (Error) <WarningAmberOutlinedIcon />
                       </div>
-                    ) : listAudio.length > 0 ? (
+                    ) : listAudio.length > 0 && !isLoadingAudio ? (
                       <Audi
                         listAudio={listAudio}
                         speed={speed}

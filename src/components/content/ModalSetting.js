@@ -107,7 +107,7 @@ const ModalSetting = (props) => {
         <Box sx={style}>
           <div className="top-container">
             <header className="Header_Modal">
-              <img src="../../img/text_to_speech.png" alt="" />
+              <img src="../../text_to_speech.png" alt="" />
               <h2 className={"Header_Modal_Title"}> Setting Text To Speech</h2>
             </header>
             <ClearOutlinedIcon className="icon-clear" onClick={handleClose} />
