@@ -45,7 +45,7 @@
   position: absolute;
   display: flex;
   width: 450px;
-  border: 1px solid #2ec4b6;
+  border: 1px solid #cf87c6;
   border-radius: 4px;
   box-shadow: 0 0 8px rgb(1 22 39 / 30%);
   flex-direction: column;
@@ -84,7 +84,7 @@
 }
 
 .Text__translation_popup > .Text__header > .Text__btn.Text__disabled {
-  color: #b8ebe6;
+  color: #fdfffc;
 }
 
 .Text__translation-popup > .Text__header > .Text__btn {
@@ -101,7 +101,11 @@
 }
 
 .Button__btn__1lr0f:not(.Button__keep-cursor__V97qw).Button__disabled__38AlQ {
-  cursor: not-allowed;
+  cursor: pointer;
+}
+
+.Icon_settings:hover {
+  color: #75677c;
 }
 
 .Text__wrapper:not([data-popup-direction="none"])
@@ -110,8 +114,8 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-top: 1px solid #2ec4b6;
-  border-left: 1px solid #2ec4b6;
+  border-top: 1px solid #cf87c6;
+  border-left: 1px solid #cf87c6;
   box-shadow: 0 0 8px rgb(1 22 39 / 30%);
 }
 
@@ -121,8 +125,8 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-top: 1px solid #2ec4b6;
-  border-left: 1px solid #2ec4b6;
+  border-top: 1px solid #cf87c6;
+  border-left: 1px solid #cf87c6;
 }
 
 .Text__wrapper_bottom:not([data-popup-direction="none"])
@@ -131,8 +135,8 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-top: 1px solid #2ec4b6;
-  border-left: 1px solid #2ec4b6;
+  border-top: 1px solid #cf87c6;
+  border-left: 1px solid #cf87c6;
   box-shadow: 0 0 8px rgb(1 22 39 / 30%);
 }
 
@@ -142,20 +146,20 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  border-top: 1px solid #2ec4b6;
-  border-left: 1px solid #2ec4b6;
+  border-top: 1px solid #cf87c6;
+  border-left: 1px solid #cf87c6;
 }
 
 /* .Text__wrapper[data-popup-direction="downward"] > .Text__translation_popup > .Text__arrow {
     top: -8px;
     transform: translateX(-50%) rotate(45deg);
-    background-color: #2EC4B6;
+    background-color: #cf87c6;
 } */
 
 .Text__arrow {
   top: -8px;
   transform: translateX(-50%) rotate(45deg);
-  background-color: #2ec4b6;
+  background-color: #cf87c6;
 }
 
 .Text__arrow_bottom {
@@ -168,7 +172,7 @@
   z-index: 1;
   display: flex;
   height: 30px;
-  background-color: #2ec4b6;
+  background-color: #cf87c6;
 }
 
 .Text__translation_popup > .Text__header > .Text__languages {
@@ -241,4 +245,9 @@
 
 .display_text_icon:hover {
   color: brown;
+}
+
+.Text__term_line{
+  text-align: center;
+  margin-top:15px
 }

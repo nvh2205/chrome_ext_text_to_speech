@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import audioApi from '../services/audioApi'
+
 
 const initialText = {
   selectText: [],
@@ -10,6 +12,11 @@ const initialText = {
   left: 0,
   bottom: 0,
   arrowPositionSelect: 0,
+  speaker_id: 0,
+  speed_up: 1.0,
+  isLoadingAudio: false,
+  error: null,
+  listAudio:[]
 };
 
 const text = createSlice({
@@ -40,14 +47,32 @@ const text = createSlice({
       state.x = payload.x ? payload.x : 0;
       state.y = payload.y ? payload.y : 0;
     },
+
+    setIsLoadingAudio: (state, action) => {
+      state.isLoadingAudio = action.payload;
+    },
+    setSpeakSpeed: (state, action) => {
+      const { speaker_id, speed_up } = action.payload;
+
+      state.speaker_id = speaker_id;
+      state.speed_up = speed_up;
+    },
     removeState: (state, action) => {
       state = {};
       return state;
     },
-  },
+  }
+
 });
 
 const { reducer, actions } = text;
-export const { setText, setShowIcon, setShowPopover, setXY, removeState } =
-  actions;
+export const {
+  setText,
+  setShowIcon,
+  setShowPopover,
+  setXY,
+  removeState,
+  setIsLoadingAudio,
+  setSpeakSpeed
+} = actions;
 export default reducer;
