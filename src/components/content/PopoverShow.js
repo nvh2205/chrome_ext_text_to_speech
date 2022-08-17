@@ -13,6 +13,7 @@ import {
   setShowIcon,
   setShowPopover,
   setXY,
+  setIsLoadingAudio,
 } from "../../redux/textSlice";
 import { useSelector, useDispatch } from "react-redux";
 import Audi from "./Audi";
@@ -21,6 +22,10 @@ import audioApi from "../../services/audioApi";
 import axios from "axios";
 import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 import PauseCircleOutlineOutlinedIcon from "@mui/icons-material/PauseCircleOutlineOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
+import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
+import ModalSetting from "./ModalSetting";
 
 function PopoverShow(props, ref) {
   //width and Height of Popover
@@ -38,6 +43,9 @@ function PopoverShow(props, ref) {
     showPopover,
     arrowPositionSelect,
     selectText,
+    speaker_id,
+    speed_up,
+    isLoadingAudio,
   } = text_;
 
   const style =
@@ -64,6 +72,31 @@ function PopoverShow(props, ref) {
     setSpeed(optionSpeed);
   };
 
+  const id = showPopover ? "simple-popover" : undefined;
+
+  //Drag-Drop component
+  const nodeRef = useRef(null);
+
+  //Ref icon next to text to play pause audio
+  const refIconPlay = useRef(null);
+
+  //Play icon to play pause Audio
+  const [playAudio, setPlayAudio] = useState(false);
+
+  //ref to scroll to an element while playing music
+  const refElementScrollText = useRef(null);
+
+  const elementRef = useRef();
+  const [heightPop, setHeightPop] = useState(0);
+
+  //Open modal setting
+  const [openModalSetting, setOpenModalSetting] = useState(false);
+
+  //Audio when call api
+  const [listAudio, setListAudio] = useState([]);
+
+  const [errLoadingCallAudio, setErrLoadingCallAudio] = useState(false);
+
   const tagOptionSpeed = (popupState, optionSpeed, speed) => {
     let result = optionSpeed.filter((item) => item != speed);
     return result.map((item, index) => (
@@ -84,23 +117,6 @@ function PopoverShow(props, ref) {
     const action = setShowPopover(false);
     dispatch(action);
   };
-
-  const id = showPopover ? "simple-popover" : undefined;
-
-  //Drag-Drop component
-  const nodeRef = useRef(null);
-
-  //Ref icon next to text to play pause audio
-  const refIconPlay = useRef(null);
-
-  //Play icon to play pause Audio
-  const [playAudio, setPlayAudio] = useState(false);
-
-  //ref to scroll to an element while playing music
-  const refElementScrollText = useRef(null);
-
-  const elementRef = useRef();
-  const [heightPop, setHeightPop] = useState(0);
 
   //Get the height of the pop and set the pop's drag when clicking outside the pop
   useEffect(() => {
@@ -145,38 +161,75 @@ function PopoverShow(props, ref) {
     refElementScrollText.current.scrollIntoView();
   };
 
+  //Opend modal setting
+  const handleOpenModalSetting = () => setOpenModalSetting(true);
+
   //Call api
   useEffect(() => {
-    // const fetchAudio=async() => {
-    //   try {
-    //     const data=new FormData();
-    //     data.append("text",selectText);
-    //     const res= await audioApi.postTextConvertAudio(data);
-
-    //     console.log(res);
-
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // }
-    // fetchAudio();
-
     const fetchAudio = async () => {
-      const data = new FormData();
-      data.append("text", selectText);
+      //console.log(process.env.REACT_APP_API_URL,'aa')
+      const actionSetLoadingAudio = setIsLoadingAudio(true);
+      dispatch(actionSetLoadingAudio);
 
-      try {
-        const res = await axios.post(
-          "https://demo.corenlp.admicro.vn/tts_multispeakers_demo_2/vangt",
-          data
-        );
-        console.log(res);
-      } catch (error) {
-        console.log(error.message);
-      }
+      const listAudioFetch = await Promise.all(
+        selectText.map(async (item, index) => {
+          const arrText = item.split(" ");
+          const textIndex = arrText.splice(0, 1).join(" ");
+
+          const data = new FormData();
+
+          data.append("text", item);
+          data.append("speaker_id", speaker_id);
+          data.append("speed_up", speed_up);
+          try {
+            const res = await axios.post(
+              `https://d018-202-191-58-161.ap.ngrok.io/vangt`,
+              data
+            );
+            return {
+              src: `https://d018-202-191-58-161.ap.ngrok.io/static/${res.data.file_path}`,
+              name: `${index}. ${textIndex}...`,
+            };
+          } catch (error) {
+            return "err";
+          }
+        })
+      );
+
+      const actionSetLoadingAudioF = setIsLoadingAudio(false);
+      dispatch(actionSetLoadingAudioF);
+      setListAudio(listAudioFetch);
     };
     fetchAudio();
-  }, [selectText]);
+
+    // const listAudioFetch = async () => {
+    //   setIsLoadingAudio(true);
+    //   const data = selectText.map((item, index) => {
+    //     return {
+    //       text: item,
+    //       speaker_id,
+    //       speed_up,
+    //     };
+    //   });
+
+    //   const res = await audioApi.postTextConvertAudio(data);
+    //   setListAudio(res);
+    //   setIsLoadingAudio(false);
+    // };
+
+    // listAudioFetch();
+
+    return () => {
+      const actionSetLoadingAudioT = setIsLoadingAudio(true);
+      dispatch(actionSetLoadingAudioT);
+    };
+  }, [selectText, speaker_id, speed_up]);
+
+  //Err when call api
+  useEffect(() => {
+    const err = listAudio.find((item) => item == "err");
+    err ? setErrLoadingCallAudio(true) : setErrLoadingCallAudio(false);
+  }, [listAudio]);
 
   const disPlayText = () => {
     const result = selectText.map((item, index) => {
@@ -188,17 +241,29 @@ function PopoverShow(props, ref) {
             indexText == index ? styles.display_text_play : styles.display_text
           }`}
         >
-          {playAudio && indexText == index ? (
-            <PauseCircleOutlineOutlinedIcon
-              className={styles.display_text_icon}
-              onClick={clickIconToPlayAudio}
-              id={`Text_to_${index}`}
-            />
+          {listAudio.length > 0 && !isLoadingAudio? (
+            errLoadingCallAudio ? (
+              <WarningAmberOutlinedIcon
+                className={styles.display_text_icon}
+                id={`Text_to_${index}`}
+              />
+            ) : playAudio && indexText == index ? (
+              <PauseCircleOutlineOutlinedIcon
+                className={styles.display_text_icon}
+                onClick={clickIconToPlayAudio}
+                id={`Text_to_${index}`}
+              />
+            ) : (
+              <PlayCircleFilledWhiteOutlinedIcon
+                className={styles.display_text_icon}
+                onClick={clickIconToPlayAudio}
+                id={`Text_to_${index}`}
+              />
+            )
           ) : (
-            <PlayCircleFilledWhiteOutlinedIcon
+            <CircularProgress
+              color="secondary"
               className={styles.display_text_icon}
-              onClick={clickIconToPlayAudio}
-              id={`Text_to_${index}`}
             />
           )}
           <p
@@ -214,6 +279,11 @@ function PopoverShow(props, ref) {
       );
     });
     return result;
+  };
+
+  const hancleClosePopover = () => {
+    const action = setShowPopover(true);
+    dispatch(action);
   };
 
   return (
@@ -268,11 +338,19 @@ function PopoverShow(props, ref) {
             <section className={`${styles.Text__header}`} id="strong">
               <div
                 data-hook="content-page.save-card"
-                title="Save as a card"
+                title="Setting"
                 className={`${styles.Text__btn}  ${styles.Text__disabled} ${styles.Button__btn__1lr0f} ${styles.Button__disabled__38AlQ}`}
                 tabIndex={-1}
               >
-                <HeadsetMicIcon sx={{ marginTop: "2px" }} />
+                <SettingsOutlinedIcon
+                  onClick={handleOpenModalSetting}
+                  sx={{ marginTop: "2px" }}
+                  className={`${styles.Icon_settings}`}
+                />
+                <ModalSetting
+                  openModalSetting={openModalSetting}
+                  setOpenModalSetting={setOpenModalSetting}
+                />
               </div>
 
               <section className={`${styles.Text__languages}`}>
@@ -300,7 +378,11 @@ function PopoverShow(props, ref) {
                 className={`${styles.Text__btn} ${styles.Button__btn__1lr0f}`}
                 tabIndex={0}
               >
-                <HighlightOffOutlinedIcon sx={{ marginTop: "2px" }} />
+                <HighlightOffOutlinedIcon
+                  className={`${styles.Icon_settings}`}
+                  sx={{ marginTop: "2px" }}
+                  onClick={handleClose}
+                />
               </div>
             </section>
 
@@ -328,14 +410,24 @@ function PopoverShow(props, ref) {
 
                   {/* Audio */}
                   <section className={`${styles.Text__term_line}`}>
-                    <Audi
-                      speed={speed}
-                      ref={refIconPlay}
-                      setPlayAudio={setPlayAudio}
-                      setIndexText={setIndexText}
-                      indexText={indexText}
-                      onClickExecuteScrollText={onClickExecuteScrollText}
-                    />
+                    {errLoadingCallAudio ? (
+                      <div style={{ color: "red" }}>
+                        <WarningAmberOutlinedIcon /> Không thể tải được audio
+                        (Error) <WarningAmberOutlinedIcon />
+                      </div>
+                    ) : listAudio.length > 0 && !isLoadingAudio ? (
+                      <Audi
+                        listAudio={listAudio}
+                        speed={speed}
+                        ref={refIconPlay}
+                        setPlayAudio={setPlayAudio}
+                        setIndexText={setIndexText}
+                        indexText={indexText}
+                        onClickExecuteScrollText={onClickExecuteScrollText}
+                      />
+                    ) : (
+                      <CircularProgress color="secondary" />
+                    )}
                   </section>
                 </section>
               </section>

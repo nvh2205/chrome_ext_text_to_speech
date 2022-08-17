@@ -36,7 +36,7 @@ function Foreground() {
     }
 
     //Number of cut characters
-    const splitText = 150;
+    const splitText = 70;
 
     if (text) {
       //Cut large strings into smaller ones for faster api delivery
