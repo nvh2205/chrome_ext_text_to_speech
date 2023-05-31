@@ -36,6 +36,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.0",
     "@reduxjs/toolkit": "^1.8.3",
+    "antd": "^5.5.0",
     "axios": "^0.27.2",
     "formik": "^2.2.9",
     "material-ui-popup-state": "^4.0.1",

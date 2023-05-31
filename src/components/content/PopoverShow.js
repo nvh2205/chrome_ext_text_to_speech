@@ -6,7 +6,7 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
+import PopupState, { bindTrigger, bindMenu, bindPopover } from "material-ui-popup-state";
 import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined";
 import {
   setText,
@@ -26,7 +26,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ModalSetting from "./ModalSetting";
-
+import Tooltip from '@mui/material/Tooltip';
 function PopoverShow(props, ref) {
   //width and Height of Popover
   const { widthPop } = props;
@@ -51,13 +51,13 @@ function PopoverShow(props, ref) {
   const style =
     top > 0
       ? {
-          left: `${left}px`,
-          top: `${top}px`,
-        }
+        left: `${left}px`,
+        top: `${top}px`,
+      }
       : {
-          left: `${left}px`,
-          bottom: `${bottom}px`,
-        };
+        left: `${left}px`,
+        bottom: `${bottom}px`,
+      };
 
   const [optionSpeed, setOptionSpeed] = useState([
     0.25, 0.5, 0.75, 1, 1.25, 1.5, 2.0,
@@ -128,14 +128,15 @@ function PopoverShow(props, ref) {
       const hiddenPopoverDefault = document.getElementsByClassName(
         "css-3bmhjh-MuiPaper-root-MuiPopover-paper"
       )[0];
-      hiddenPopoverDefault.style["min-width"] = "1px";
+      hiddenPopoverDefault.style.minWidth = "0px";
+      hiddenPopoverDefault.style.minHeight = "0px";
 
       //The element when clicked out will turn off the popver
-      const tagClosePopover = document.getElementsByClassName(
-        "MuiBackdrop-invisible"
-      )[0];
-      tagClosePopover.style.width = `${2 * window.innerHeight}px`;
-      tagClosePopover.style.height = `${2 * window.innerWidth}px`;
+      // const tagClosePopover = document.getElementsByClassName(
+      //   "MuiBackdrop-invisible"
+      // )[0];
+      // tagClosePopover.style.width = `${2 * window.innerHeight}px`;
+      // tagClosePopover.style.height = `${2 * window.innerWidth}px`;
     });
 
     return () => {
@@ -237,11 +238,10 @@ function PopoverShow(props, ref) {
         <div
           key={index}
           ref={index == indexText ? refElementScrollText : null}
-          className={`${
-            indexText == index ? styles.display_text_play : styles.display_text
-          }`}
+          className={`${indexText == index ? styles.display_text_play : styles.display_text
+            }`}
         >
-          {listAudio.length > 0 && !isLoadingAudio? (
+          {listAudio.length > 0 && !isLoadingAudio ? (
             errLoadingCallAudio ? (
               <WarningAmberOutlinedIcon
                 className={styles.display_text_icon}
@@ -282,9 +282,11 @@ function PopoverShow(props, ref) {
   };
 
   const hancleClosePopover = () => {
-    const action = setShowPopover(true);
-    dispatch(action);
+    // const action = setShowPopover(true);
+    // dispatch(action);
+    console.log("aaaaaaaaaaaaaaaaaa")
   };
+
 
   return (
     <Draggable
@@ -293,17 +295,17 @@ function PopoverShow(props, ref) {
       bounds={
         top > 0
           ? {
-              top: -top,
-              left: -left + widthPop / 2,
-              right: window.innerWidth - left - widthPop / 2,
-              bottom: window.innerHeight - top - heightPop,
-            }
+            top: -top,
+            left: -left + widthPop / 2,
+            right: window.innerWidth - left - widthPop / 2,
+            bottom: window.innerHeight - top - heightPop,
+          }
           : {
-              bottom: bottom - 15,
-              left: -left + widthPop / 2,
-              right: window.innerWidth - left - widthPop / 2,
-              top: -window.innerHeight + bottom + heightPop,
-            }
+            bottom: bottom - 15,
+            left: -left + widthPop / 2,
+            right: window.innerWidth - left - widthPop / 2,
+            top: -window.innerHeight + bottom + heightPop,
+          }
       }
       positions={null}
       handle="#strong"
@@ -314,23 +316,24 @@ function PopoverShow(props, ref) {
         onClose={handleClose}
         ref={nodeRef}
         disableScrollLock={true}
+
       >
         <section
-          className={`${
-            top ? styles.Text__wrapper : styles.Text__wrapper_bottom
-          }`}
+          className={`${top ? styles.Text__wrapper : styles.Text__wrapper_bottom
+            }`}
           data-popup-direction="downward"
+
         >
           <section
             ref={elementRef}
             data-translatex="-50%"
             className={`${styles.Text__translation_popup}`}
             style={style}
+
           >
             <div
-              className={`${
-                top ? styles.Text__arrow : styles.Text__arrow_bottom
-              }`}
+              className={`${top ? styles.Text__arrow : styles.Text__arrow_bottom
+                }`}
               style={{ left: `${arrowPositionSelect}%` }}
             ></div>
 
@@ -354,7 +357,7 @@ function PopoverShow(props, ref) {
               </div>
 
               <section className={`${styles.Text__languages}`}>
-                <PopupState variant="popover" popupId="demo-popup-menu">
+                <PopupState variant="popover" popupId="demo-popup-menu" >
                   {(popupState) => (
                     <React.Fragment>
                       <Button variant="outlined" {...bindTrigger(popupState)}>
@@ -410,14 +413,18 @@ function PopoverShow(props, ref) {
 
                   {/* Audio */}
                   <section className={`${styles.Text__term_line}`}>
-                    {errLoadingCallAudio ? (
+                    {!errLoadingCallAudio ? (
                       <div style={{ color: "red" }}>
                         <WarningAmberOutlinedIcon /> Không thể tải được audio
                         (Error) <WarningAmberOutlinedIcon />
                       </div>
                     ) : listAudio.length > 0 && !isLoadingAudio ? (
                       <Audi
-                        listAudio={listAudio}
+                        listAudio={[
+                          {
+                            name: "Memories",
+                            src: "https://pega-audio.mediacdn.vn/./Grad_tts/out/20220801212958.m4a",
+                          }]}
                         speed={speed}
                         ref={refIconPlay}
                         setPlayAudio={setPlayAudio}

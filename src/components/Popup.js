@@ -1,17 +1,20 @@
 import React from 'react';
-
+import Header from './popup/Header';
+import BodyPopup from './popup/BodyPopup';
+import "./popup/popup.css"
 function Popup() {
     return (
-        <div>
-            <h1>This is text to speech</h1>
+        <div className='popup'>
+            <Header />
+            <BodyPopup/>
         </div>
     )
 }
 
 const styles = {
     main: {
-        width: '300px',
-        height: '600px'
+        width: '350px',
+        height: '400px'
     }
 }
 

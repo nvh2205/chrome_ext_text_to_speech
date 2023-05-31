@@ -156,7 +156,6 @@ function Foreground() {
     <div
     //onMouseDown={onMouseDown}
     >
-      <ForegroundA />
       {aavv()}
       {showIcon && <ShowIcon />}
       {showPopover && <PopoverShow widthPop={widthPop} heightPop={heightPop} />}
