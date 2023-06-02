@@ -55,6 +55,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -10px;
+
 }
 
 .info > h4 {
@@ -64,11 +66,22 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
+.group-button{
+  display: flex;
+  align-items: center;
+}
 .icon-button {
   /* text-align: end; */
   display: flex !important;
-  margin: -45px 15px 0px auto !important;
+  margin: -40px 15px 0px auto !important;
+  width: 10px;
+  min-width: 10px !important;
+}
+
+.icon-button2 {
+  /* text-align: end; */
+  display: flex !important;
+  margin: -40px 0px 0px 15px !important;
   width: 10px;
   min-width: 10px !important;
 }
@@ -77,10 +90,9 @@
   margin-top: 8px;
   padding-bottom: 0;
   padding-top: 8px;
-  width: 80%;
+  width: 90%;
 }
 .card {
-  padding: 16px;
   background-color: #fff;
   border-width: 1px;
   border: 1px solid #e2bce9;
@@ -88,7 +100,6 @@
   border-radius: 6px;
   box-shadow: 0 2px 4px 0 hsla(0, 0%, 84%, 0.5);
   color: #e94fe4;
-
 }
 
 #counter-panel .stats {
@@ -122,7 +133,7 @@
 #stats-total strong {
   padding-top: 10px;
   display: block;
-  font-size: 1.4em;
+  font-size: 1.2em;
 }
 
 .card strong {
@@ -134,23 +145,30 @@
   overflow: hidden;
   position: relative;
   padding: var(--padding);
-  border-top: 1px solid #d28bdb ;
+  border-top: 1px solid #d28bdb;
 }
 
 #counter-panel .share .stack {
   display: flex;
-  margin-bottom:4px;
+  margin-bottom: 4px;
   justify-content: center;
   transition: transform 0.5s cubic-bezier(0.8, 0, 0.25, 1);
 }
 
-
 /* FORM */
-.form{
+.form {
   width: 90%;
   margin-top: 12px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-.text-field{
+.img-loading{
+  width: 10%;
+  margin-top: 10px;
+}
+
+.text-field {
   width: 100%;
 }

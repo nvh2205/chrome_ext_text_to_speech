@@ -14,8 +14,8 @@ const Audi = (props, ref) => {
     listAudio
   } = props;
 
-  const text_ = useSelector((state) => state.text);
-  const { selectText } = text_;
+  // const text_ = useSelector((state) => state.text);
+  const { selectText } = 'text_';
 
   const [trackIndex, setTrackIndex] = useState(0);
 
@@ -48,21 +48,21 @@ const Audi = (props, ref) => {
     setPlayAudio(false);
   };
 
-  useEffect(() => {
-    ref.current.audio.current.playbackRate = speed;
-  }, [speed]);
+  // useEffect(() => {
+  //   ref.current.audio.current.playbackRate = speed;
+  // }, [speed]);
 
   return (
     <div className={`${styles.audioPlayer}`}>
       <AudioPlayer
         ref={ref}
-        style={{ borderRadius: "1rem" }}
-        src={listAudio[indexText].src}
+        // style={{ borderRadius: "1rem" }}
+        src={listAudio[0].src}
         onPlay={onPlay}
         onPause={onPause}
-        showSkipControls={true}
-        showJumpControls={true}
-        header={`Now playing: ${listAudio[indexText].name}`}
+        // showSkipControls={true}
+        // showJumpControls={true}
+        // header={`Now playing: ${listAudio[0].name}`}
         //footer="All music from: www.bensound.com"
         onClickPrevious={handleClickPrevious}
         onClickNext={handleClickNext}
