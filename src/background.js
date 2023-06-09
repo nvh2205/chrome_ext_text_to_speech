@@ -1,5 +1,5 @@
-const api = 'https://tts-app.site/main/v1'
-
+// const api = 'https://tts-app.site/main/v1'
+const api = `https://192.168.1.142:3030/main/v1`
 //when istall chrome 
 chrome.runtime.onInstalled.addListener(async () => {
     const res = await getFetch("premium/1");
@@ -26,7 +26,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 //Get storage
 const getStorage = async () => {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.get(["token", "charPerReq", "charPerMonth"], function (value) {
+        chrome.storage.local.get(["token", "charPerReq", "charPerMonth", "userName", "avatarUrl"], function (value) {
             resolve(value);
         });
     });
@@ -86,9 +86,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             let userCode = result["userCode"] ? result["userCode"] : null;
             data.userCode = userCode;
             postFetch(endPoint, data).then((response) => {
-                console.log(response,"response  bakc")
                 sendResponse(response);
             })
+        })
+    } else if (request.event === 'info') {
+        //Get storage info user
+        getStorage().then((result) => {
+            const { fullName, avtarUrl } = result;
+            const dataInfo = { fullName, avtarUrl };
+            sendResponse(dataInfo);
         })
     }
     return true;

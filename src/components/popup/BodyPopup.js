@@ -10,28 +10,19 @@ import TextField from '@mui/material/TextField';
 import AudioPlayer from "react-h5-audio-player";
 import Audi from '../content/Audi'
 import SettingsIcon from '@mui/icons-material/Settings';
+import PersonInfo from './PersonInfo';
 let listAudio = [
     {
         name: "Memories",
         src: "https://pega-audio.mediacdn.vn/./Grad_tts/out/20220801212958.m4a",
     }]
+
+
 const BodyPopup = () => {
     return (
         <div className='body-popup'>
-            <div className='person-info'>
-                <div className='avatar-info'>
-                    <Avatar sx={{ width: 56, height: 56 }} className='avatar-img'></Avatar>
-                </div>
-                <div className='group-button'>
-                    <Button className='icon-button2' color="secondary" variant="outlined" ><SettingsIcon /></Button>
-                    <Button className='icon-button' color="secondary" variant="outlined" ><LogoutIcon /></Button>
-
-                </div>
-                <div className='info'>
-                    <h4>Hieu Nguyen</h4>
-                </div>
-            </div>
-
+           
+            <PersonInfo/>
 
             <div id="counter-panel" className="card">
                 <div className="stats">

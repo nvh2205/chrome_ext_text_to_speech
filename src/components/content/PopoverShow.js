@@ -168,7 +168,7 @@ function PopoverShow(props, ref) {
   //scroll to an element while playing music
   // const onClickExecuteScrollText = () => {
   //   refElementScrollText.current.scrollIntoView();
-  // };
+  // };8
 
   //Opend modal setting
   const handleOpenModalSetting = async () => {
