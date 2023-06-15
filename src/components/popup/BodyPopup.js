@@ -11,6 +11,9 @@ import AudioPlayer from "react-h5-audio-player";
 import Audi from '../content/Audi'
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonInfo from './PersonInfo';
+import { useSelector, useDispatch } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
+
 let listAudio = [
     {
         name: "Memories",
@@ -19,9 +22,12 @@ let listAudio = [
 
 
 const BodyPopup = () => {
+    const popupState = useSelector((state) => state.popupReducer)
+    const { isLoadingGlobal } = popupState;
+     
     return (
-        <div className='body-popup'>
-           
+        <div className='body-popup' style={{opacity:isLoadingGlobal?'0.4':'1'}}>
+           {/* Loading g */}
             <PersonInfo/>
 
             <div id="counter-panel" className="card">

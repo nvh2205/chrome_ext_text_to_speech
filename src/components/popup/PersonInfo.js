@@ -4,20 +4,35 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './personInfo.css'
 import Avatar from '@mui/material/Avatar';
-
+import { useSelector, useDispatch } from "react-redux";
+import { setLoadingGlobal } from '../../redux/popupSlice'
 const PersonInfo = () => {
+    const dispatch = useDispatch();
+
+    //Get state in redux
+    const popupState = useSelector((state) => state.popupReducer)
+    const { isLoadingGlobal } = popupState;
+
     const [userName, setUserName] = useState('');
-    const [avatarUrl, setAvatarUrl] = useState('');
+    const [avatarUrl, setAvatarUrl] = useState('') ;
+
     //Get info
     useEffect(() => {
-        chrome.runtime.sendMessage({
-            event: "info"
-        }, function (response) {
-            setUserName(response.fullName);
-            setAvatarUrl(response.avatarUrl);
-        });
-    }, [])
-
+        const getInfoUser = async () => {
+            dispatch(setLoadingGlobal(true));
+            await new Promise((resolve, reject) => {
+                chrome.runtime.sendMessage({
+                    event: "info"
+                }, function (response) {
+                    setUserName(response.fullName);
+                    setAvatarUrl(response.avatarUrl);
+                    resolve();
+                });
+            })
+            dispatch(setLoadingGlobal(false));
+        }
+        // getInfoUser()
+    },[])
 
 
     return (
@@ -31,7 +46,7 @@ const PersonInfo = () => {
 
             </div>
             <div className='info'>
-                <h4>Hieu Nguyen</h4>
+                <h4>{userName?userName:'anonymous'}</h4>
             </div>
         </div>
     );
