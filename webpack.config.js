@@ -66,6 +66,17 @@ module.exports = {
         use: ["style-loader", "css-loader"],
         exclude: /\.module\.css$/,
       },
+      {
+        test: /\.(jpe?g|gif|png|svg)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000
+            }
+          }
+        ]
+      }
     ],
   },
   plugins: [
@@ -90,6 +101,7 @@ module.exports = {
         { from: "src/background.js", to: "[name][ext]" },
         { from: "src/inject_script.js", to: "[name][ext]" },
         { from: "src/*.png", to: "[name][ext]" },
+        { from: "src/*.gif", to: "[name][ext]" },
       ],
     }),
     new webpack.DefinePlugin({

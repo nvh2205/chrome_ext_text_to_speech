@@ -15,15 +15,18 @@ import CancelPresentationOutlinedIcon from "@mui/icons-material/CancelPresentati
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { setIsLoadingAudio, setSpeakSpeed } from "../../redux/textSlice";
+import { setSpeakSpeed } from "../../redux/popupSlice";
+import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined";
+import OutlinedInput from "@mui/material/OutlinedInput";
 
 import "./modalSetting.css";
+import { Menu } from "@mui/material";
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 300,
   bgcolor: "background.paper",
   borderRadius: "15px",
   boxShadow: 24,
@@ -41,11 +44,18 @@ const accent = [
   },
 ];
 
-const minSpeedSpeech = 0.25;
-const maxSpeedSpeech = 3;
+const optionSpeed = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2.0];
 
+const ITEM_HEIGHT = 28;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+    }
+  }
+};
 const ModalSetting = (props) => {
-
   const form = useRef("form");
 
   const { openModalSetting, setOpenModalSetting } = props;
@@ -63,13 +73,13 @@ const ModalSetting = (props) => {
     setSeedSpeech(value);
   };
 
-  const text_ = useSelector((state) => state.text);
+  const text_ = useSelector((state) => state.popupReducer);
   const { speaker_id, speed_up } = text_;
   const dispatch = useDispatch();
 
   const handleSubmitSetting = async (e) => {
     e.preventDefault();
-    setOpenModalSetting(false)
+    setOpenModalSetting(false);
 
     // const actionSetLoadingAudio = setIsLoadingAudio(true);
     // dispatch(actionSetLoadingAudio);
@@ -89,7 +99,7 @@ const ModalSetting = (props) => {
   const handleClickDefaultSetting = () => {
     setSeedSpeech(1.0);
     setSpeekerId(0);
-  }
+  };
 
   return (
     <Modal
@@ -107,7 +117,7 @@ const ModalSetting = (props) => {
         <Box sx={style}>
           <div className="top-container">
             <header className="Header_Modal">
-              <img src={chrome.runtime.getURL("text_to_speech.png")} alt="" />
+              <img src="../../text_to_speech.png" alt="" />
               <h2 className={"Header_Modal_Title"}> Setting Text To Speech</h2>
             </header>
             <ClearOutlinedIcon className="icon-clear" onClick={handleClose} />
@@ -116,88 +126,82 @@ const ModalSetting = (props) => {
           {/* Main modal */}
           <main>
             <ValidatorForm onSubmit={handleSubmitSetting} ref={form}>
-
               <div className={"Main_Modal_info"}>
                 <div id="default-container">
-                  <div id="counter-panel" className="card">
-                    <div className="stats">
+                  <div id="counter-panel-modal" className="card_modal">
+                    <div className="stats_modal">
                       <div id="stats-page">
-                        <InputLabel id="demo-simple-select-standard-label">
-                          Giọng đọc
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-standard-label"
-                          id="demo-simple-select-standard"
+                        <TextField
                           value={speekerId}
                           onChange={handleChangeSelectSpeekerId}
-                          displayEmpty
                           color="secondary"
                           sx={{ width: "100%" }}
+                          select
+                          label="Giọng Đọc"
                         >
                           {accent.map((item, index) => {
-                            return index == 0 ? (
+                            return (
                               <MenuItem key={index} value={item.speaker_id}>
                                 <em> {item.label}</em>
                               </MenuItem>
-                            ) : (
-                              <MenuItem key={index} value={item.speaker_id}>
-                                {item.label}
-                              </MenuItem>
-                            );
+                            )
                           })}
-                        </Select>
+                        </TextField>
 
-                        {/* <InputLabel id="demo-simple-select-standard-label">
-                          Giọng đọc
-                        </InputLabel> */}
-                        {/* <TextField
-                          sx={{ marginTop: "20px" }}
-                          required
-                          id="standard-basic"
-                          label="Tốc độ đọc"
-                          variant="standard"
-                          value={speedSpeech}
-                          onChange={handleChangeInputSpeed}
-                          type="number"
-                          color="secondary"
-                        /> */}
-                        <TextValidator
-                          sx={{ marginTop: "20px" }}
-                          variant="standard"
-                          color="secondary"
-                          label="Tốc độ đọc"
-                          name="speedSpeech"
-                          onChange={handleChangeInputSpeed}
-                          validators={[
-                            "required",
-                            "minNumber:0",
-                            "maxNumber:3",
-                            "matchRegexp:^[0-9]$",
-                          ]}
-                          errorMessages={[
-                            "Không được để trống!",
-                            "Tốc độ đọc phải lơn hơn 0!",
-                            "Tốc độ đọc phải nhỏ hơn 3!",
-                            "Chỉ nhận số",
-                          ]}
-                          value={speedSpeech}
-                        />
+                        <FormControl sx={{ minWidth: "100%", marginTop: "25px" }}>
+                          <InputLabel color="secondary" id="demo-simple-select-standard-label">
+                            Tốc Độ
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={speedSpeech}
+                            onChange={handleChangeInputSpeed}
+                            displayEmpty
+                            color="secondary"
+                            sx={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}
+                            input={<OutlinedInput color="secondary" label="Tốc Độ" />}
+                            MenuProps={MenuProps}
+                          >
+                            {optionSpeed.map((item, index) => {
+                              return (
+                                <MenuItem key={index} value={item}>
+                                  <SpeedOutlinedIcon
+                                    sx={{
+                                      marginRight: "5px",
+                                      marginLeft: "5px",
+                                    }}
+                                  />
+                                  <em> X{item}</em>
+                                </MenuItem>
+                              )
+                            })}
+
+                          </Select>
+                        </FormControl>
                       </div>
                     </div>
-                    <div className="share">
+                    <div className="share_modal">
                       <Button
                         type="submit"
                         color="secondary"
                         variant="outlined"
+                        size="small"
+                        sx={{ marginRight: "10px" }}
                       >
                         <CheckOutlinedIcon sx={{ marginRight: "5px" }} />
                         Xác nhận
                       </Button>
-                      <Button variant="outlined" color="success" onClick={handleClickDefaultSetting}>
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        onClick={handleClose}
+                      >
                         <CancelPresentationOutlinedIcon
-                          sx={{ marginRight: "5px" }}
+                          sx={{ marginRight: "8px" }}
                         />
-                        Mặc định
+                        Huỷ Bỏ
                       </Button>
                     </div>
                   </div>

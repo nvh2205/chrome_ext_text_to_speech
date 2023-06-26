@@ -1,0 +1,29 @@
+.audioPlayer {
+  display: flex;
+  text-align: center;
+  margin-top: 1px;
+  width: 90%;
+  height: 22%;
+  flex-direction: column;
+
+}
+
+.player {
+  border-radius: 6px;
+  border: 1px solid #e2bce9;
+  background-color: #f6f2f6;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 84%, 0.5);
+  height: 115px;
+}
+
+.loading-audio {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed !important;
+}
+
+.progress-audio{
+    width: 100%;
+}
+
+

@@ -1,0 +1,23 @@
+/* FORM */
+.form {
+  width: 90%;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.img-loading {
+  width: 60%;
+  margin-top: 10px;
+}
+
+.text-field {
+  width: 100%;
+}
+
+.svg-button {
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
+}

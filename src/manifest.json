@@ -1,5 +1,5 @@
 {
-  "name": "ReactJS Chrome Extension",
+  "name": "Text To Speech",
   "description": "Using ReactJS to build a Chrome Extension",
   "version": "0.1.0",
   "manifest_version": 3,
@@ -17,5 +17,11 @@
     "default_popup": "popup.html"
   },
   "host_permissions": ["http://*/*", "https://*/*"],
-  "permissions": ["activeTab", "tabs", "storage", "scripting"]
+  "permissions": ["activeTab", "tabs", "storage", "scripting"],
+  "web_accessible_resources": [
+    {
+      "resources": ["text_to_speech.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

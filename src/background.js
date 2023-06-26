@@ -1,5 +1,5 @@
 // const api = 'https://tts-app.site/main/v1'
-const api = `https://192.168.1.142:3030/main/v1`
+const api = `http://localhost:3030/main/v1`
 //when istall chrome 
 chrome.runtime.onInstalled.addListener(async () => {
     const res = await getFetch("premium/1");

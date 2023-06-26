@@ -1,6 +1,6 @@
 .popup{
     width: 350px;
-    height: 600px;
+    height: 575px;
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;

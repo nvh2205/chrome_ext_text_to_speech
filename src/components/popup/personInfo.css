@@ -55,6 +55,7 @@
 .group-button {
   display: flex;
   align-items: center;
+  transition: transform 2s;
 }
 .icon-button {
   /* text-align: end; */
@@ -70,4 +71,9 @@
   margin: -40px 0px 0px 15px !important;
   width: 10px;
   min-width: 10px !important;
+
+}
+.setting-icon:hover{
+  transform: rotate(-90deg);
+
 }

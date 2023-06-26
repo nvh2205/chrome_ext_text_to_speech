@@ -1,0 +1,68 @@
+#counter-panel {
+  margin-top: 8px;
+  padding-bottom: 0;
+  padding-top: 8px;
+  width: 90%;
+}
+.card {
+  background-color: #fff;
+  border-width: 1px;
+  border: 1px solid #e2bce9;
+  background-color: #f3e5f2;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px 0 hsla(0, 0%, 84%, 0.5);
+  color: #e94fe4;
+}
+
+#counter-panel .stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-bottom: 16px;
+}
+
+#stats-page {
+  position: relative;
+}
+
+#stats-page,
+#stats-total {
+  flex-grow: 1;
+  text-align: center;
+}
+
+#stats-page::after {
+  position: absolute;
+  top: calc(50% - 10px);
+  width: 1px;
+  height: 20px;
+  background-color: #c453d3;
+  content: "";
+  right: 0;
+}
+
+#stats-page strong,
+#stats-total strong {
+  padding-top: 10px;
+  display: block;
+  font-size: 1.2em;
+}
+
+.card strong {
+  color: #000;
+}
+
+#counter-panel .share {
+  --padding: 4px;
+  overflow: hidden;
+  position: relative;
+  padding: var(--padding);
+  border-top: 1px solid #d28bdb;
+}
+
+#counter-panel .share .stack {
+  display: flex;
+  margin-bottom: 4px;
+  justify-content: center;
+  transition: transform 0.5s cubic-bezier(0.8, 0, 0.25, 1);
+}

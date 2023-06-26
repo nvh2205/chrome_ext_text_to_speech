@@ -6,34 +6,23 @@ import './personInfo.css'
 import Avatar from '@mui/material/Avatar';
 import { useSelector, useDispatch } from "react-redux";
 import { setLoadingGlobal } from '../../redux/popupSlice'
-const PersonInfo = () => {
+import Modal from '@mui/material/Modal';
+import ModalSetting from './ModalSetting';
+
+const PersonInfo = ({ userName, avatarUrl }) => {
     const dispatch = useDispatch();
 
     //Get state in redux
     const popupState = useSelector((state) => state.popupReducer)
     const { isLoadingGlobal } = popupState;
 
-    const [userName, setUserName] = useState('');
-    const [avatarUrl, setAvatarUrl] = useState('') ;
-
-    //Get info
-    useEffect(() => {
-        const getInfoUser = async () => {
-            dispatch(setLoadingGlobal(true));
-            await new Promise((resolve, reject) => {
-                chrome.runtime.sendMessage({
-                    event: "info"
-                }, function (response) {
-                    setUserName(response.fullName);
-                    setAvatarUrl(response.avatarUrl);
-                    resolve();
-                });
-            })
-            dispatch(setLoadingGlobal(false));
-        }
-        // getInfoUser()
-    },[])
-
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <div className='person-info'>
@@ -41,13 +30,14 @@ const PersonInfo = () => {
                 <Avatar sx={{ width: 56, height: 56 }} className='avatar-img'></Avatar>
             </div>
             <div className='group-button'>
-                <Button className='icon-button2' color="secondary" variant="outlined" ><SettingsIcon /></Button>
+                <Button onClick={handleOpen} className='icon-button2' color="secondary" variant="outlined" ><SettingsIcon className='setting-icon' /></Button>
                 <Button className='icon-button' color="secondary" variant="outlined" ><LogoutIcon /></Button>
 
             </div>
             <div className='info'>
-                <h4>{userName?userName:'anonymous'}</h4>
+                <h4>{userName ? userName : 'anonymous'}</h4>
             </div>
+            <ModalSetting openModalSetting={open} setOpenModalSetting={setOpen} />
         </div>
     );
 };
