@@ -10,6 +10,9 @@ const initialState = {
     linkAudio: '',
     speaker_id: 1,
     speed_up: 1,
+    errMessage: '',
+    avatarUrl: null,
+    username: null,
 };
 
 const popupSlice = createSlice({
@@ -37,6 +40,14 @@ const popupSlice = createSlice({
             state.speaker_id = speaker_id;
             state.speed_up = speed_up;
         },
+        SetErrMessagesGetInfo: (state, action) => {
+            state.errMessage = action.payload;
+        },
+        setInfoUser: (state, action) => {
+            const { username, avatarUrl } = action.payload;
+            state.avatarUrl = avatarUrl
+            state.username = username
+        }
     }
 
 });
@@ -49,5 +60,7 @@ export const {
     setLoadingAudio,
     setLinkAudio,
     setSpeakSpeed,
+    SetErrMessagesGetInfo,
+    setInfoUser
 } = actions;
 export default reducer;

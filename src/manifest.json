@@ -1,6 +1,6 @@
 {
-  "name": "Text To Speech",
-  "description": "Using ReactJS to build a Chrome Extension",
+  "name": "Read Speaker Pro",
+  "description": "A Chrome extension that converts text to lifelike speech. Listen to web pages and documents with a click, enhancing accessibility and productivity on any device",
   "version": "0.1.0",
   "manifest_version": 3,
   "icons": {
@@ -17,11 +17,18 @@
     "default_popup": "popup.html"
   },
   "host_permissions": ["http://*/*", "https://*/*"],
-  "permissions": ["activeTab", "tabs", "storage", "scripting"],
+  "permissions": ["activeTab", "tabs", "storage", "scripting","identity"],
   "web_accessible_resources": [
     {
       "resources": ["text_to_speech.png"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "oauth2": {
+    "client_id": "348416483646-8aed8dj3fbjjmhfmbm5a4mt3c8bu0khm.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  }
 }

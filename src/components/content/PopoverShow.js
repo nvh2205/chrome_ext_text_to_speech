@@ -143,8 +143,8 @@ function PopoverShow(props, ref) {
       const tagClosePopover = document.getElementsByClassName(
         "MuiBackdrop-invisible"
       )[0];
-      tagClosePopover.style.width = `${2 * window.innerHeight}px`;
-      tagClosePopover.style.height = `${2 * window.innerWidth}px`;
+      tagClosePopover.style.width = `100%`;
+      tagClosePopover.style.height = `100%`;
     });
 
     return () => {

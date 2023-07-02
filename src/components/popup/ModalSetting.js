@@ -35,11 +35,11 @@ const style = {
 
 const accent = [
   {
-    speaker_id: 0,
+    speaker_id: 1,
     label: "Nữ",
   },
   {
-    speaker_id: 1,
+    speaker_id: 0,
     label: "Nam",
   },
 ];

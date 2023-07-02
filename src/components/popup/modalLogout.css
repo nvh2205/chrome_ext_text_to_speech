@@ -1,0 +1,40 @@
+.top-modal-logout {
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* .Main_Modal_info_logout {
+  border-top: 1px solid #e6e6e6;
+} */
+
+#counter-panel-logout {
+    padding-bottom: 0;
+    width: 100%;
+}
+
+.card_logout {
+    border-width: 1px;
+    /* border: 1px solid #e2bce9; */
+    /* background-color: #f3e5f2; */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px 0 hsla(0, 0%, 84%, 0.5);
+    color: #e94fe4;
+}
+
+.stats_logout{
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 12px;
+}
+
+#stats-page-logout {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 30px;
+}
+
+.share_logout{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

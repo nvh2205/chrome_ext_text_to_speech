@@ -13,7 +13,7 @@ const Audio = (props) => {
 
   const ref = useRef(null);
   const popupState = useSelector((state) => state.popupReducer)
-  const { isLoadingAudio, speed_up } = popupState;
+  const { isLoadingAudio, speed_up, linkAudio } = popupState;
 
   //On play when user play audio
   const onPlay = () => {
@@ -22,6 +22,7 @@ const Audio = (props) => {
 
   useEffect(() => {
     ref.current.audio.current.playbackRate = speed_up;
+    ref.current.audio.current.play();
   }, [speed_up]);
 
   return (
@@ -30,7 +31,7 @@ const Audio = (props) => {
       <AudioPlayer
         ref={ref}
         style={{ borderRadius: "6px" }}
-        src={listAudio[0]}
+        src={linkAudio}
         onPlay={onPlay}
         // showSkipControls={true}
         showJumpControls={true}
