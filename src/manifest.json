@@ -1,7 +1,7 @@
 {
   "name": "Read Speaker Pro",
-  "description": "A Chrome extension that converts text to lifelike speech. Listen to web pages and documents with a click, enhancing accessibility and productivity on any device",
-  "version": "0.1.0",
+  "description": "A Chrome extension that converts text to lifelike speech. Listen to web pages and documents with a click, enhancing accessibility",
+  "version": "0.1.1",
   "manifest_version": 3,
   "icons": {
     "16": "./obj-16x16.png",

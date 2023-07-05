@@ -23,10 +23,11 @@
 }
 
 .Header_Modal > img {
-  height: 2.5em !important ;
+  height: 50px !important ;
   margin-right: 20px !important ;
 }
 .Header_Modal_Title {
+  font-size: 23px;
   font-style: italic !important ;
   color: #e088dc !important ;
   font-style: oblique !important ;

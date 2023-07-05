@@ -279,8 +279,9 @@ function PopoverShow(props, ref) {
             style={
               indexText == index
                 ? {
+                  fontSize: "17px",
                   marginLeft: "15px",
-                  textDecoration: "underline",
+                  // textDecoration: "underline",
                   textAlign: "15px",
                   whiteSpace: "pre-line"
                 }
@@ -330,7 +331,7 @@ function PopoverShow(props, ref) {
       <Popover
         id={id}
         open={showPopover}
-        onClose={handleClose}
+        // onClose={handleClose}
         ref={nodeRef}
         disableScrollLock={true}
       >

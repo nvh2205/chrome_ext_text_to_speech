@@ -7,6 +7,9 @@ import { Provider } from 'react-redux'
 
 function init() {
     const appContainer = document.createElement('div')
+    const header = document.createElement('meta');
+    header.setAttribute('charset', 'utf8');
+    document.head.appendChild(header)
     document.body.appendChild(appContainer)
     if (!appContainer) {
         throw new Error("Can not find AppContainer");
