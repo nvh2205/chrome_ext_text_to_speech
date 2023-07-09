@@ -48,7 +48,7 @@ const FormPopup = () => {
                 event: "audio",
                 data: data
             }, function (response) {
-                if (response.errorCode || response.statusCode) {
+                if (!response || response.errorCode || response.statusCode) {
                     setErrGetAudio("Không thể get được audio")
                     resolve();
                 } else {

@@ -105,8 +105,9 @@ module.exports = {
       ],
     }),
     new webpack.DefinePlugin({
-      'process.env':{
-        'REACT_APP_API_URL': JSON.stringify('https://tts-app.site')
+      'process.env': {
+        'REACT_APP_API_URL': JSON.stringify('https://tts-app.site'),
+        "DEFAULT_CHAR_PER_REQ": 70
       }
     }),
     new webpack.ProvidePlugin({

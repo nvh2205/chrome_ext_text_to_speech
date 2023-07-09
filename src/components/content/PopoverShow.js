@@ -27,6 +27,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ModalSetting from "./ModalSetting";
+import Popper from '@mui/material/Popper';
 
 function PopoverShow(props, ref) {
   //width and Height of Popover
@@ -75,7 +76,7 @@ function PopoverShow(props, ref) {
     setSpeed(optionSpeed);
   };
 
-  const id = showPopover ? "simple-popover" : undefined;
+  const id = showPopover ? "simple-popover-id" : undefined;
 
   //Drag-Drop component
   const nodeRef = useRef(null);
@@ -134,23 +135,38 @@ function PopoverShow(props, ref) {
       setHeightPop(divElement.clientHeight);
 
       //Hide default popover position in left corner of screen
-      const hiddenPopoverDefault =
-        document.getElementsByClassName("MuiPopover-paper")[0];
-      hiddenPopoverDefault.style["minWidth"] = "0px";
-      hiddenPopoverDefault.style["minHeight"] = "0px";
+      // const hiddenPopoverDefault =
+      //   document.getElementsByClassName("MuiPopover-paper")[0];
+      // hiddenPopoverDefault.style["minWidth"] = "0px";
+      // hiddenPopoverDefault.style["minHeight"] = "0px";
 
       //The element when clicked out will turn off the popver
-      const tagClosePopover = document.getElementsByClassName(
-        "MuiBackdrop-invisible"
-      )[0];
-      tagClosePopover.style.width = `100%`;
-      tagClosePopover.style.height = `100%`;
+
+      const a = document.getElementById("simple-popover-id");
+      a.attachShadow({ mode: 'open' })
+      const target = document.getElementById('simple-popover-id').shadowRoot;
+      const b = document.getElementById("sellect");
+      target.appendChild(b);
+
+      const tagClosePopover = document.getElementById(
+        "simple-popover-id"
+      );
+      tagClosePopover.style.zIndex = `1234`;
+      // tagClosePopover.style.height = `100%`;
+      tagClosePopover.style.left = '0px'
+      if (top > 0) {
+        tagClosePopover.style.top = '0px'
+      } else {
+        tagClosePopover.style.bottom = '0px'
+      }
     });
 
     return () => {
       clearTimeout(setPopoverTimeOut);
     };
   }, [showPopover]);
+
+
 
   //Play icon to play audio
   const clickIconToPlayAudio = (e) => {
@@ -191,7 +207,7 @@ function PopoverShow(props, ref) {
           event: "audio",
           data: data
         }, function (response) {
-          if (response.errorCode || response.statusCode) {
+          if (!response || response.errorCode || response.statusCode) {
             resolve('error');
           } else {
             resolve(response);
@@ -200,10 +216,10 @@ function PopoverShow(props, ref) {
       })
 
       //Version old listAudio is array 
-      const listAudio=[];
-      if(typeof data != 'string') {
+      const listAudio = [];
+      if (typeof dataRes != 'string') {
         listAudio.push(`${process.env.REACT_APP_API_URL}/${dataRes.data}`)
-      }else{
+      } else {
         //If err
         listAudio.push(dataRes);
       }
@@ -306,6 +322,7 @@ function PopoverShow(props, ref) {
     console.log("Event Type", e.type);
     console.log({ e, data });
   };
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -328,17 +345,22 @@ function PopoverShow(props, ref) {
       positions={null}
       handle="#strong"
     >
-      <Popover
+      <Popper
         id={id}
         open={showPopover}
         // onClose={handleClose}
         ref={nodeRef}
+        // placement="bottom"
+
+        // disableRestoreFocus
         disableScrollLock={true}
+      // sx={{pointerEvents:'auto'}}
       >
         <section
           className={`${top ? styles.Text__wrapper : styles.Text__wrapper_bottom
             }`}
           data-popup-direction="downward"
+          id="sellect"
         >
           <section
             ref={elementRef}
@@ -437,7 +459,7 @@ function PopoverShow(props, ref) {
                         {!checkNumberOfCharacters && (<div>
                           <WarningAmberOutlinedIcon /> Bạn đã dùng hết số lượng ký tự trên một tháng
                           (Error) <WarningAmberOutlinedIcon />
-                          <Button color="secondary" style={{marginTop:"10px"}} variant="outlined">Nâng Cấp Ngay</Button>
+                          <Button color="secondary" style={{ marginTop: "10px" }} variant="outlined">Nâng Cấp Ngay</Button>
                         </div>)}
                       </div>
                     ) : listAudio.length > 0 && !isLoadingAudio ? (
@@ -459,7 +481,7 @@ function PopoverShow(props, ref) {
             </section>
           </section>
         </section>
-      </Popover>
+      </Popper>
     </Draggable>
   );
 }

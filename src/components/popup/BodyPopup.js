@@ -51,7 +51,7 @@ const BodyPopup = () => {
                             );
 
                             dispatch(setCharPerMonth(response.charPerMonth || null));
-                            dispatch(setCharPerReq(response.charPerReq || 150));
+                            dispatch(setCharPerReq(response.charPerReq || process.env.DEFAULT_CHAR_PER_REQ));
                             resolve();
                         }
                     );

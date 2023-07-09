@@ -1,10 +1,11 @@
 // const api = 'https://tts-app.site/main/v1'
 const api = `https://tts-app.site/main/v1`;
+
 //when istall chrome
 chrome.runtime.onInstalled.addListener(async () => {
-    const res = await getFetch("premium/1");
+    const res = await getFetch("premium/title?titlePremium=not%20login");
     chrome.storage.local.set({
-        charPerReq: res.charPerRequest
+        charPerReq: res.data.charPerRequest
     });
 });
 
@@ -96,8 +97,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 : "audio/not-login-audio";
             let userCode = result["userCode"] ? result["userCode"] : null;
             data.userCode = userCode;
+
             postFetch(endPoint, data).then((response) => {
                 sendResponse(response);
+                
+            }).catch((error) => {
+                sendResponse(null);
             });
         });
     } else if (request.event === "info") {
@@ -138,11 +143,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
     } else if (request.event === "logout") {
         //Get default char per request when logout
-        const endPoint = "premium/1";
+        const endPoint = "premium/title?titlePremium=not%20login";
         getFetch(endPoint).then((res) => {
             sendResponse(res);
             chrome.storage.local.set({
-                charPerReq: res.charPerRequest ? res.charPerRequest : 150,
+                charPerReq: res.data.charPerRequest ? res.data.charPerRequest : process.env.DEFAULT_CHAR_PER_REQ,
                 token: null,
                 fullName: null,
                 avatarUrl: null,

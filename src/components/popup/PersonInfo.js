@@ -34,7 +34,8 @@ const PersonInfo = () => {
         try {
             chrome.identity.getAuthToken({ interactive: true }, async (token) => {
                 if (chrome.runtime.lastError || !token) {
-                    dispatch(SetErrMessagesGetInfo(`Error! Can't login`));
+                    dispatch(SetErrMessagesGetInfo(`Error! Can't login `));
+                    dispatch(setLoadingGlobal(false));
                     return;
                 }
                 await new Promise((resolve, reject) => {
@@ -47,7 +48,8 @@ const PersonInfo = () => {
                         },
                         function (response) {
                             if (response && response.errorCode) {
-                                dispatch(SetErrMessagesGetInfo(`Error! Can't logout`));
+                                dispatch(SetErrMessagesGetInfo(`Error! Can't login`));
+                                resolve();
                             }
                             const data = response.data;
                             dispatch(

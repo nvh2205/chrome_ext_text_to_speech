@@ -24,8 +24,8 @@ function Foreground() {
     //Set redux for the number of characters per request and char per month
     async function getChromeStorage() {
       await new Promise((resolve, reject) => {
-        chrome.storage.local.get(["charPerReq","charPerMonth"], function (value) {
-          const charPerReq = value["charPerReq"] ? value["charPerReq"] : 150
+        chrome.storage.local.get(["charPerReq", "charPerMonth"], function (value) {
+          const charPerReq = value["charPerReq"] ? value["charPerReq"] : process.env.DEFAULT_CHAR_PER_REQ
           const action = setCharPerReq(charPerReq);
           dispatch(action);
 
@@ -101,7 +101,7 @@ function Foreground() {
         dispatch(actionShowIcon);
         clearTimeout(timeoutShowIcon);
       }, 0);
-      
+
       //Send text to reducer
       const actionText = setText(cutText);
       dispatch(actionText);
