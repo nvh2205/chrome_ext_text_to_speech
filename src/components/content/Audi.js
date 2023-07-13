@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef, forwardRef } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import styles from "./audio.module.css";
 import { useSelector, useDispatch } from "react-redux";
-
 const Audi = (props, ref) => {
   const {
     speed,
@@ -53,7 +51,7 @@ const Audi = (props, ref) => {
   }, [speed]);
 
   return (
-    <div className={`${styles.audioPlayer}`}>
+    <div className={`${"audioPlayer"}`}>
       <AudioPlayer
         ref={ref}
         style={{ borderRadius: "1rem" }}

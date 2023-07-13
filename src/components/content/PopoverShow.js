@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./popover.module.css";
 import Popover from "@mui/material/Popover";
 import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
@@ -28,7 +27,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ModalSetting from "./ModalSetting";
 import Popper from '@mui/material/Popper';
-
 function PopoverShow(props, ref) {
   //width and Height of Popover
   const { widthPop } = props;
@@ -133,32 +131,6 @@ function PopoverShow(props, ref) {
     const setPopoverTimeOut = setTimeout(() => {
       const divElement = showPopover && elementRef.current;
       setHeightPop(divElement.clientHeight);
-
-      //Hide default popover position in left corner of screen
-      // const hiddenPopoverDefault =
-      //   document.getElementsByClassName("MuiPopover-paper")[0];
-      // hiddenPopoverDefault.style["minWidth"] = "0px";
-      // hiddenPopoverDefault.style["minHeight"] = "0px";
-
-      //The element when clicked out will turn off the popver
-
-      const a = document.getElementById("simple-popover-id");
-      a.attachShadow({ mode: 'open' })
-      const target = document.getElementById('simple-popover-id').shadowRoot;
-      const b = document.getElementById("sellect");
-      target.appendChild(b);
-
-      const tagClosePopover = document.getElementById(
-        "simple-popover-id"
-      );
-      tagClosePopover.style.zIndex = `1234`;
-      // tagClosePopover.style.height = `100%`;
-      tagClosePopover.style.left = '0px'
-      if (top > 0) {
-        tagClosePopover.style.top = '0px'
-      } else {
-        tagClosePopover.style.bottom = '0px'
-      }
     });
 
     return () => {
@@ -263,24 +235,24 @@ function PopoverShow(props, ref) {
         <div
           key={index}
           ref={index == indexText ? refElementScrollText : null}
-          className={`${indexText == index ? styles.display_text_play : styles.display_text
+          className={`${indexText == index ? "display_text_play" : "display_text"
             }`}
         >
           {listAudio.length > 0 && !isLoadingAudio ? (
             errLoadingCallAudio ? (
               <WarningAmberOutlinedIcon
-                className={styles.display_text_icon}
+                className={"display_text_icon"}
                 id={`Text_to_${index}`}
               />
             ) : playAudio && indexText == index ? (
               <PauseCircleOutlineOutlinedIcon
-                className={styles.display_text_icon}
+                className={"display_text_icon"}
                 onClick={clickIconToPlayAudio}
                 id={`Text_to_${index}`}
               />
             ) : (
               <PlayCircleFilledWhiteOutlinedIcon
-                className={styles.display_text_icon}
+                className={"display_text_icon"}
                 onClick={clickIconToPlayAudio}
                 id={`Text_to_${index}`}
               />
@@ -288,7 +260,7 @@ function PopoverShow(props, ref) {
           ) : (
             <CircularProgress
               color="secondary"
-              className={styles.display_text_icon}
+              className={"display_text_icon"}
             />
           )}
           <p
@@ -324,6 +296,7 @@ function PopoverShow(props, ref) {
   };
 
   return (
+
     <Draggable
       nodeRef={nodeRef}
       // onStop={eventHandler}
@@ -350,50 +323,48 @@ function PopoverShow(props, ref) {
         open={showPopover}
         // onClose={handleClose}
         ref={nodeRef}
-        // placement="bottom"
-
-        // disableRestoreFocus
         disableScrollLock={true}
-      // sx={{pointerEvents:'auto'}}
+        sx={{zIndex:1234,top:'0px',left:'0px',bottom:'0px'}}
       >
         <section
-          className={`${top ? styles.Text__wrapper : styles.Text__wrapper_bottom
+          className={`${top ? "Text__wrapper" : "Text__wrapper_bottom"
             }`}
           data-popup-direction="downward"
-          id="sellect"
         >
           <section
             ref={elementRef}
             data-translatex="-50%"
-            className={`${styles.Text__translation_popup}`}
+            className={`${"Text__translation_popup"}`}
             style={style}
           >
             <div
-              className={`${top ? styles.Text__arrow : styles.Text__arrow_bottom
+              className={`${top ? "Text__arrow" : "Text__arrow_bottom"
                 }`}
               style={{ left: `${arrowPositionSelect}%` }}
             ></div>
 
             {/* Header popover */}
-            <section className={`${styles.Text__header}`} id="strong">
+            <section className={"Text__header"} id="strong">
               <div
                 data-hook="content-page.save-card"
                 title="Setting"
-                className={`${styles.Text__btn}  ${styles.Text__disabled} ${styles.Button__btn__1lr0f} ${styles.Button__disabled__38AlQ}`}
+                className={`${"Text__btn"}  ${"Text__disabled"} ${"Button__btn__1lr0f"} ${"Button__disabled__38AlQ"}`}
                 tabIndex={-1}
               >
                 <SettingsOutlinedIcon
                   onClick={handleOpenModalSetting}
                   sx={{ marginTop: "2px" }}
-                  className={`${styles.Icon_settings}`}
+                  className={`${"Icon_settings"}`}
                 />
+
                 <ModalSetting
                   openModalSetting={openModalSetting}
                   setOpenModalSetting={setOpenModalSetting}
                 />
+
               </div>
 
-              <section className={`${styles.Text__languages}`}>
+              <section className={`${"Text__languages"}`}>
                 <PopupState variant="popover" popupId="demo-popup-menu">
                   {(popupState) => (
                     <React.Fragment>
@@ -415,11 +386,11 @@ function PopoverShow(props, ref) {
               <div
                 data-hook="content-page.close-Text"
                 title="Cancel"
-                className={`${styles.Text__btn} ${styles.Button__btn__1lr0f}`}
+                className={`${"Text__btn"} ${"Button__btn__1lr0f"}`}
                 tabIndex={0}
               >
                 <HighlightOffOutlinedIcon
-                  className={`${styles.Icon_settings}`}
+                  className={`${"Icon_settings"}`}
                   sx={{ marginTop: "2px" }}
                   onClick={handleClose}
                 />
@@ -429,28 +400,28 @@ function PopoverShow(props, ref) {
             {/* Content popover */}
             <section
               data-hook="Text_wrapper"
-              className={`${styles.Text__content_body}`}
+              className={`${"Text__content_body"}`}
             >
               <section
                 data-hook="Text-original-section"
-                className={`${styles.Text__original}`}
+                className={`${"Text__original"}`}
               >
                 {/* react-text: 240 */}
                 {disPlayText()}
                 {/* /react-text */}
               </section>
-              <section className={`${styles.Text__translations}`}>
+              <section className={`${"Text__translations"}`}>
                 <section
                   data-hook="translation-view.pos-section"
-                  className={`${styles.Text__pos_wrapper}`}
+                  className={`${"Text__pos_wrapper"}`}
                 >
-                  <section className={`${styles.Text__pos_header}`}>
+                  <section className={`${"Text__pos_header"}`}>
                     {selectText.split(" ").length}/{charPerReq} Word
                     {/* react-text: 244 */}{/* /react-text */}
                   </section>
 
                   {/* Audio */}
-                  <section className={`${styles.Text__term_line}`}>
+                  <section className={`${"Text__term_line"}`}>
                     {errLoadingCallAudio ? (
                       <div style={{ color: "red" }}>
                         <WarningAmberOutlinedIcon /> Không thể tải được audio
@@ -482,7 +453,9 @@ function PopoverShow(props, ref) {
           </section>
         </section>
       </Popper>
+
     </Draggable>
+
   );
 }
 

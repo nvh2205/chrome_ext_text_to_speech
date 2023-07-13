@@ -16,14 +16,12 @@ import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { setIsLoadingAudio, setSpeakSpeed } from "../../redux/textSlice";
-
-import "./modalSetting.css";
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 375,
   bgcolor: "background.paper",
   borderRadius: "15px",
   boxShadow: 24,
@@ -92,65 +90,66 @@ const ModalSetting = (props) => {
   }
 
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      open={openModalSetting}
-      onClose={handleClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={openModalSetting}>
-        <Box sx={style}>
-          <div className="top-container">
-            <header className="Header_Modal">
-              <img src={chrome.runtime.getURL("text_to_speech.png")} alt="" />
-              <h2 className={"Header_Modal_Title"}> Setting Text To Speech</h2>
-            </header>
-            <ClearOutlinedIcon className="icon-clear" onClick={handleClose} />
-          </div>
 
-          {/* Main modal */}
-          <main>
-            <ValidatorForm onSubmit={handleSubmitSetting} ref={form}>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openModalSetting}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={openModalSetting}>
+          <Box sx={style}>
+            <div className="top-container">
+              <header className="Header_Modal">
+                <img src={chrome.runtime.getURL("text_to_speech.png")} alt="" />
+                <h2 className={"Header_Modal_Title"}> Setting Text To Speech</h2>
+              </header>
+              <ClearOutlinedIcon className="icon-clear" onClick={handleClose} />
+            </div>
 
-              <div className={"Main_Modal_info"}>
-                <div id="default-container">
-                  <div id="counter-panel" className="card">
-                    <div className="stats">
-                      <div id="stats-page">
-                        <InputLabel id="demo-simple-select-standard-label">
-                          Giọng đọc
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-standard-label"
-                          id="demo-simple-select-standard"
-                          value={speekerId}
-                          onChange={handleChangeSelectSpeekerId}
-                          displayEmpty
-                          color="secondary"
-                          sx={{ width: "100%" }}
-                        >
-                          {accent.map((item, index) => {
-                            return index == 0 ? (
-                              <MenuItem key={index} value={item.speaker_id}>
-                                <em> {item.label}</em>
-                              </MenuItem>
-                            ) : (
-                              <MenuItem key={index} value={item.speaker_id}>
-                                {item.label}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
+            {/* Main modal */}
+            <main>
+              <ValidatorForm onSubmit={handleSubmitSetting} ref={form}>
 
-                        {/* <InputLabel id="demo-simple-select-standard-label">
+                <div className={"Main_Modal_info"}>
+                  <div id="default-container">
+                    <div id="counter-panel" className="card">
+                      <div className="stats">
+                        <div id="stats-page">
+                          <InputLabel id="demo-simple-select-standard-label">
+                            Giọng đọc
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            value={speekerId}
+                            onChange={handleChangeSelectSpeekerId}
+                            displayEmpty
+                            color="secondary"
+                            sx={{ width: "100%" }}
+                          >
+                            {accent.map((item, index) => {
+                              return index == 0 ? (
+                                <MenuItem key={index} value={item.speaker_id}>
+                                  <em> {item.label}</em>
+                                </MenuItem>
+                              ) : (
+                                <MenuItem key={index} value={item.speaker_id}>
+                                  {item.label}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+
+                          {/* <InputLabel id="demo-simple-select-standard-label">
                           Giọng đọc
                         </InputLabel> */}
-                        {/* <TextField
+                          {/* <TextField
                           sx={{ marginTop: "20px" }}
                           required
                           id="standard-basic"
@@ -161,53 +160,56 @@ const ModalSetting = (props) => {
                           type="number"
                           color="secondary"
                         /> */}
-                        <TextValidator
-                          sx={{ marginTop: "20px" }}
-                          variant="standard"
-                          color="secondary"
-                          label="Tốc độ đọc"
-                          name="speedSpeech"
-                          onChange={handleChangeInputSpeed}
-                          validators={[
-                            "required",
-                            "minNumber:0",
-                            "maxNumber:3",
-                            "matchRegexp:^[0-9]$",
-                          ]}
-                          errorMessages={[
-                            "Không được để trống!",
-                            "Tốc độ đọc phải lơn hơn 0!",
-                            "Tốc độ đọc phải nhỏ hơn 3!",
-                            "Chỉ nhận số",
-                          ]}
-                          value={speedSpeech}
-                        />
+                          <TextValidator
+                            sx={{ marginTop: "20px" }}
+                            variant="standard"
+                            color="secondary"
+                            label="Tốc độ đọc"
+                            name="speedSpeech"
+                            onChange={handleChangeInputSpeed}
+                            validators={[
+                              "required",
+                              "minNumber:0",
+                              "maxNumber:3",
+                              "matchRegexp:^[0-9]$",
+                            ]}
+                            errorMessages={[
+                              "Không được để trống!",
+                              "Tốc độ đọc phải lơn hơn 0!",
+                              "Tốc độ đọc phải nhỏ hơn 3!",
+                              "Chỉ nhận số",
+                            ]}
+                            value={speedSpeech}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="share">
-                      <Button
-                        type="submit"
-                        color="secondary"
-                        variant="outlined"
-                      >
-                        <CheckOutlinedIcon sx={{ marginRight: "5px" }} />
-                        Xác nhận
-                      </Button>
-                      <Button variant="outlined" color="success" onClick={handleClickDefaultSetting}>
-                        <CancelPresentationOutlinedIcon
-                          sx={{ marginRight: "5px" }}
-                        />
-                        Mặc định
-                      </Button>
+                      <div className="share">
+                        <Button
+                          type="submit"
+                          color="secondary"
+                          variant="outlined"
+                        >
+                          <CheckOutlinedIcon sx={{ marginRight: "5px" }} />
+                          Xác nhận
+                        </Button>
+                        <Button variant="outlined" color="success" onClick={handleClickDefaultSetting}>
+                          <CancelPresentationOutlinedIcon
+                            sx={{ marginRight: "5px" }}
+                          />
+                          Mặc định
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </ValidatorForm>
-          </main>
-        </Box>
-      </Fade>
-    </Modal>
+              </ValidatorForm>
+            </main>
+          </Box>
+        </Fade>
+
+
+      </Modal>
+
   );
 };
 

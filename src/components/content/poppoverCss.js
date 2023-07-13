@@ -1,3 +1,4 @@
+const PoppoverCss = `
 .Text__wrapper[data-popup-direction="downward"] {
   top: 0;
   transform: translateY(9px);
@@ -251,3 +252,7 @@
   text-align: center;
   margin-top:15px
 }
+
+`
+
+export default PoppoverCss

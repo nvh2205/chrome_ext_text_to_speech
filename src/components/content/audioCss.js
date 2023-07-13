@@ -1,4 +1,5 @@
-
+const AudioCss =
+    `
 .audioPlayer{
     display:flex;
     text-align: center;
@@ -263,3 +264,7 @@
   .rhap_button-clear:focus:not(:focus-visible) {
     outline: 0;
   }
+  
+`
+
+export default AudioCss

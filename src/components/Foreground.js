@@ -12,6 +12,10 @@ import {
 } from "../redux/textSlice";
 import PopoverShow from "./content/PopoverShow";
 import { setPopoverCoordinates } from "../utils/ultis";
+import AudioCss from './content/audioCss'
+import PoppoverCss from './content/poppoverCss'
+import ModalSettingCss from './content/modalSettingCss'
+import ShowIconCss from './content/showIconCss'
 
 function Foreground() {
   const dispatch = useDispatch();
@@ -191,14 +195,20 @@ function Foreground() {
   };
 
   return (
-    <div
+    <main
     //onMouseDown={onMouseDown}
     >
       {/* <ForegroundA /> */}
       {/* {aavv()} */}
+      <style>
+        {ShowIconCss}
+        {PoppoverCss}
+        {ModalSettingCss}
+        {AudioCss}
+      </style>
       {showIcon && <ShowIcon />}
       {showPopover && <PopoverShow widthPop={widthPop} heightPop={heightPop} />}
-    </div>
+    </main>
   );
 }
 
